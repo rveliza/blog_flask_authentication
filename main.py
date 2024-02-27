@@ -20,7 +20,12 @@ ckeditor = CKEditor(app)
 Bootstrap5(app)
 
 # TODO: Configure Flask-Login
+login_manager = LoginManager()
+login_manager.init_app(app)
 
+@login_manager.user_loader
+def load_user(user_id):
+    return db.get_or_404(User, user_id)
 
 # CREATE DATABASE
 class Base(DeclarativeBase):
@@ -54,7 +59,7 @@ with app.app_context():
     db.create_all()
 
 
-# TODO: Use Werkzeug to hash the user's password when creating a new user.
+# Use Werkzeug to hash the user's password when creating a new user.
 @app.route('/register', methods=["POST", "GET"])
 def register():
     form = RegisterForm()
