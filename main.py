@@ -64,7 +64,16 @@ def register():
             method='pbkdf2:sha256',
             salt_length=8
         )
-        return hash_and_salted_password
+
+        new_user = User(
+            email=form.email.data,
+            name=form.name.data,
+            password=hash_and_salted_password,
+        )
+
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect(url_for('get_all_posts'))
     return render_template("register.html", form=form)
 
 
