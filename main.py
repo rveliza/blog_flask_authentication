@@ -106,10 +106,17 @@ def login():
         result = db.session.execute(db.select(User).where(User.email == email))
         # Note, email in db is unique so will only have one result.
         user = result.scalar()
+        # Email does not exist
+        if not user:
+            flash("That email does not exist, please try again!")
+            return redirect(url_for('login'))
+        # Password incorrect
+        elif not check_password_hash(user.password, password):
+            flash('Password incorrect, please try again.')
+            return redirect(url_for('login'))
 
-        if user and check_password_hash(user.password, password):
+        else:
             login_user(user)
-            return redirect(url_for('get_all_posts'))
     return render_template("login.html", form=form)
 
 
