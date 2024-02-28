@@ -64,6 +64,17 @@ with app.app_context():
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
+
+        # Check if user email is already present in db
+        result = db.session.execute(db.select(User).where(User.email == form.email.data))
+        user = result.scalar()
+
+        if user:
+            # User already exists
+            flash("You'v already signed up with that email, Log in instead!")
+            return redirect(url_for('login'))
+        
+
         hash_and_salted_password = generate_password_hash(
             form.password.data,
             method='pbkdf2:sha256',
