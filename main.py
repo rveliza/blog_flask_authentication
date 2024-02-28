@@ -12,6 +12,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # Import your forms from the forms.py
 from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm
 from functools import wraps
+from dotenv import load_dotenv
+import os
+
+
+load_dotenv('.venv/.env')
 
 # Create admin only decorator
 def admin_only(f):
@@ -34,7 +39,7 @@ def admin_only(f):
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 ckeditor = CKEditor(app)
 Bootstrap5(app)
 
@@ -60,7 +65,7 @@ def load_user(user_id):
 # CREATE DATABASE
 class Base(DeclarativeBase):
     pass
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DB')
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
