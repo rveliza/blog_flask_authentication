@@ -82,6 +82,9 @@ class BlogPost(db.Model):
     date: Mapped[str] = mapped_column(String(250), nullable=False)
     body: Mapped[str] = mapped_column(Text, nullable=False)
     img_url: Mapped[str] = mapped_column(String(250), nullable=False)
+    #***************Parent Relationship*************#
+    comments = relationship("Comment", back_populates="parent_post")
+
 
 class Comment(db.Model):
     __tablename__ = "comments"
@@ -93,6 +96,11 @@ class Comment(db.Model):
     #"comments" refers to the comments property in the User class.
     author_id: Mapped[int] = mapped_column(Integer. db.ForeignKey("users_id"))
     comment_author = relationship("User", back_populates="comments")
+
+    #***************Child Relationship*************#
+    post_id: Mapped[str] = mapped_column(Integer, db.ForeignKey("blog_posts.id"))
+    parent_post = relationship("BlogPost", back_populates="comments")
+    text: Mapped[str] = mapped_column(Text, nullable=False)
 
 
 with app.app_context():
