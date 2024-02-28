@@ -58,6 +58,11 @@ class User(UserMixin, db.Model):
 with app.app_context():
     db.create_all()
 
+# Everytime you call render_template(), you pass the current_user over to the template.
+# This will mean the nav bar will always show the correct options.
+# current_user.is_authenticated will be True if they are logged in/authenticated after registering.
+# You can check for this is header.html
+
 
 # Use Werkzeug to hash the user's password when creating a new user.
 @app.route('/register', methods=["POST", "GET"])
