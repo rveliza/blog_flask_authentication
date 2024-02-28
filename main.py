@@ -63,7 +63,7 @@ class User(UserMixin, db.Model):
     name: Mapped[str] = mapped_column(String(100))
     #This will act like a List of BlogPost objects attached to each User. 
     #The "author" refers to the author property in the BlogPost class.
-    posts = relationship('BlogPost', back_populates="author")
+    posts = relationship("BlogPost", back_populates="author")
     #*******Add parent relationship*******#
     #"comment_author" refers to the comment_author property in the Comment class.
     comments = relationship("Comment", back_populates="comment_author")
@@ -89,12 +89,11 @@ class BlogPost(db.Model):
 class Comment(db.Model):
     __tablename__ = "comments"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    text: Mapped[str] = mapped_column(Text, nullable=False)
 
     #*******Add child relationship*******#
     #"users.id" The users refers to the tablename of the Users class.
     #"comments" refers to the comments property in the User class.
-    author_id: Mapped[int] = mapped_column(Integer. db.ForeignKey("users_id"))
+    author_id: Mapped[int] = mapped_column(Integer, db.ForeignKey("users.id"))
     comment_author = relationship("User", back_populates="comments")
 
     #***************Child Relationship*************#
@@ -104,15 +103,15 @@ class Comment(db.Model):
 
 
 with app.app_context():
-    new_user = User(
-        name="admin",
-        email="admin@cartoons.com",
-        password=generate_password_hash(
-            password="123456",
-            method="pbkdf2:sha256",
-            salt_length=8
-        )
-    )
+    # new_user = User(
+    #     name="admin",
+    #     email="admin@cartoons.com",
+    #     password=generate_password_hash(
+    #         password="123456",
+    #         method="pbkdf2:sha256",
+    #         salt_length=8
+    #     )
+    # )
     # db.session.add(new_user)
     # db.session.commit()
     db.create_all()
