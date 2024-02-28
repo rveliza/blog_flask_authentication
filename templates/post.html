@@ -41,19 +41,22 @@
         <!-- Add a CKEditor for commenting below -->
         {{ ckeditor.load() }}
         {{ ckeditor.config(name='comment_text') }}
+        {{ render_form(form, novalidate=True, button_map={"submit": "primary"}) }}
         <div class="comment">
-          <!-- TODO: Show all the comments on a post -->
-          {{ render_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+          <!-- Show all the comments on a post -->
           <ul class="commentList">
+            <!-- Show all comments -->
+            {% for comment in post.comments: %}
             <li>
               <div class="commenterImage">
                 <img src="../static/assets/img/default-profile.jpg" />
               </div>
               <div class="commentText">
-                <p>Some comment</p>
-                <span class="date sub-text">comment author name</span>
+                {{ comment.text|safe }}
+                <span class="date sub-text">{{comment.comment_author.name }}</span>
               </div>
             </li>
+            {% endfor %}
           </ul>
         </div>
       </div>
