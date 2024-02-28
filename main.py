@@ -78,6 +78,9 @@ def register():
 
         db.session.add(new_user)
         db.session.commit()
+
+        # This line will authenticate the user with Flask-Login
+        login_user(new_user)
         return redirect(url_for('get_all_posts'))
     return render_template("register.html", form=form)
 
